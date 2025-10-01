@@ -162,7 +162,7 @@
         <button data-timeslot="t4" class="timeslot-btn"><span class="color-swatch" style="background-color: #DE3163;"></span>04:00 - 17:15</button>
         <hr class="my-1 border-gray-200"> <!-- Visual separator -->
         <button id="toggle-route-btn" class="timeslot-btn active">
-            <span class="color-swatch" style="background-color: #800080;"></span>Toggle Race Track Route On
+            <span class="color-swatch" style="background-color: #800080;"></span>Toggle Cycle Route
         </button>
     </div>
 
@@ -295,9 +295,16 @@
                 closure.layer = polyline;
             }
 
-            // B. Create Table Row
+            // B. Create Table Row with Color Swatch
             const row = tableBody.insertRow();
-            row.insertCell().textContent = closure.name;
+            
+            // Color the entire row with a semi-transparent version of the timeslot color
+            if (closure.originalColor) {
+                row.style.backgroundColor = closure.originalColor + '33'; // Append hex for ~20% opacity
+            }
+
+            const nameCell = row.insertCell();
+            nameCell.textContent = closure.name;
             row.insertCell().textContent = closure.from;
             row.insertCell().textContent = closure.to;
             closure.row = row;
@@ -378,12 +385,22 @@
             }
         });
 
-        // --- 8. Initial View ---
+        // --- 8. Mobile Table Toggle Logic ---
+        const toggleTableButton = document.getElementById('toggle-table-btn');
+        const tableContainer = document.getElementById('table-container');
+
+        toggleTableButton.addEventListener('click', () => {
+            tableContainer.classList.toggle('shown');
+        });
+
+
+        // --- 9. Initial View ---
         // Show all closures with their original colors
         showTimeSlot('all');
 
     </script>
 </body>
 </html>
-" and the user's query is "make this suitable for phones displays as well"
+
+
 
